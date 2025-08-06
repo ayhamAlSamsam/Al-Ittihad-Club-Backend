@@ -5,9 +5,21 @@ const asyncHandler = require("express-async-handler");
 const { uploadMixOfImages } = require("../middlewares/uploadingImage");
 exports.uploadEventImages = uploadMixOfImages([
   { name: "images", maxCount: 10 },
+  { name: "photo", maxCount: 1 },
 ]);
 
 exports.resizeEventImages = asyncHandler(async (req, res, next) => {
+  if (req.files && req.files.photo) {
+    const photoFilename = `event-${uuidv4()}-${Date.now()}.webp`;
+
+    await sharp(req.files.photo[0].buffer)
+      .toFormat("webp")
+      .webp({ quality: 70 })
+      .toFile(`uploads/event/${photoFilename}`);
+
+    req.body.photo = photoFilename;
+  }
+
   if (req.files && req.files.images) {
     req.body.images = [];
     await Promise.all(
@@ -24,7 +36,6 @@ exports.resizeEventImages = asyncHandler(async (req, res, next) => {
 
   next();
 });
-
 exports.getEvent = async ({
   keyword,
   page = 1,

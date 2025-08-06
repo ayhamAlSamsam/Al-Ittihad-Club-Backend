@@ -5,16 +5,26 @@ const { v4: uuidv4 } = require("uuid");
 const { uploadMixOfImages } = require("../middlewares/uploadingImage");
 exports.uploadNewsImages = uploadMixOfImages([
   { name: "images", maxCount: 10 },
+  { name: "photo", maxCount: 1 },
 ]);
 
-// Image processing
 exports.resizeNewsImages = asyncHandler(async (req, res, next) => {
+  if (req.files && req.files.photo) {
+    const photoFilename = `news-${uuidv4()}-${Date.now()}.webp`;
+
+    await sharp(req.files.photo[0].buffer)
+      .toFormat("webp")
+      .webp({ quality: 70 })
+      .toFile(`uploads/news/${photoFilename}`);
+
+    req.body.photo = photoFilename;
+  }
 
   if (req.files && req.files.images) {
     req.body.images = [];
     await Promise.all(
       req.files.images.map(async (file) => {
-        const filename = `News-${uuidv4()}-${Date.now()}.webp`;
+        const filename = `news-${uuidv4()}-${Date.now()}.webp`;
         await sharp(file.buffer)
           .toFormat("webp")
           .webp({ quality: 70 })
@@ -55,7 +65,7 @@ exports.getAllNews = async ({
     totalPages,
     currentPage: parsedPage,
     limit: parsedLimit,
-    news
+    news,
   };
 };
 

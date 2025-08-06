@@ -12,7 +12,7 @@ const TeamMemberSchema = new Schema(
     team: { type: Schema.Types.ObjectId, ref: "Team" },
     ageGroup: { type: String },
     bio: { type: String },
-    photo:  String ,
+    photo: String,
     stats: {
       appearances: Number,
       goals: Number,
@@ -29,6 +29,14 @@ const setImageURL = (doc) => {
   if (doc.photo) {
     const imageUrl = `${process.env.BASE_URL}/teamMember/${doc.photo}`;
     doc.photo = imageUrl;
+  }
+  if (doc.images) {
+    const imageList = [];
+    doc.images.forEach((image) => {
+      const imageUrl = `${process.env.BASE_URL}/teamMember/${image}`;
+      imageList.push(imageUrl);
+    });
+    doc.images = imageList;
   }
 };
 

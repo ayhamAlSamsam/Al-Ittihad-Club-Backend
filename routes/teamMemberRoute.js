@@ -15,12 +15,9 @@ const {
 
 const TeamMemberRouter = express.Router();
 
-TeamMemberRouter.route("/").get(getAllMembers).post(
-  Auth.protect,
-  uploadTeamMemberImage,
-  // resizeTeamMemberImages,
-  createMember
-);
+TeamMemberRouter.route("/")
+  .get(getAllMembers)
+  .post(Auth.protect, uploadTeamMemberImage,resizeTeamMemberImages, createMember);
 TeamMemberRouter.route("/:id")
   .get(getMemberById)
   .put(

@@ -6,19 +6,26 @@ const newsSchema = new Schema(
     title: String,
     content: String,
     video: String,
+    photo : String ,
     images: [String], 
   },
   { timestamps: true }
 );
 
 const setImageURL = (doc) => {
-  if (doc.images && doc.images.length > 0) {
-    const imageList = doc.images.map((image) => {
-      return `${process.env.BASE_URL}/news/${image}`;
+  if (doc.photo) {
+    const imageUrl = `${process.env.BASE_URL}/news/${doc.photo}`;
+    doc.photo = imageUrl;
+  }
+  if (doc.images) {
+    const imageList = [];
+    doc.images.forEach((image) => {
+      const imageUrl = `${process.env.BASE_URL}/news/${image}`;
+      imageList.push(imageUrl);
     });
     doc.images = imageList;
   }
-}
+};
 
 newsSchema.post("init", (doc) => {
   setImageURL(doc);

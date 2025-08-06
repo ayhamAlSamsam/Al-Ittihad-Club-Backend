@@ -11,15 +11,22 @@ const MatchSchema = new Schema(
       awayScore: Number,
     },
     videos: String,
+    photo : String , 
     images: [String],
     date : String
   },
   { timestamps: true }
 );
 const setImageURL = (doc) => {
-  if (doc.images && doc.images.length > 0) {
-    const imageList = doc.images.map((image) => {
-      return `${process.env.BASE_URL}/match/${image}`;
+  if (doc.photo) {
+    const imageUrl = `${process.env.BASE_URL}/match/${doc.photo}`;
+    doc.photo = imageUrl;
+  }
+  if (doc.images) {
+    const imageList = [];
+    doc.images.forEach((image) => {
+      const imageUrl = `${process.env.BASE_URL}/match/${image}`;
+      imageList.push(imageUrl);
     });
     doc.images = imageList;
   }
