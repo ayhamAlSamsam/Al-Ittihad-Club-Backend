@@ -3,7 +3,8 @@ const { Schema } = mongoose;
 
 const MatchSchema = new Schema(
   {
-    location: String,
+    locationAR: String,
+    locationEN: String,
     homeTeam: { type: Schema.Types.ObjectId, ref: "Team" },
     awayTeam: { type: Schema.Types.ObjectId, ref: "Team" },
     result: {
@@ -11,9 +12,9 @@ const MatchSchema = new Schema(
       awayScore: Number,
     },
     videos: String,
-    photo : String , 
+    photo: String,
     images: [String],
-    date : String
+    date: String,
   },
   { timestamps: true }
 );

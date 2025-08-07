@@ -1,12 +1,14 @@
 const mongoose = require("mongoose");
-const { Schema} = mongoose;
+const { Schema } = mongoose;
 
 const InvestmentSchema = new Schema(
   {
-    title: String,
-    description: String,
+    titleAR: String,
+    titleEN: String,
+    descriptionAR: String,
+    descriptionEN: String,
     deadline: Date,
-    status : String , 
+    status: String,
   },
   { timestamps: true }
 );

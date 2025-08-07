@@ -3,7 +3,8 @@ const Schema = mongoose.Schema;
 
 const TeamMemberSchema = new Schema(
   {
-    name: { type: String, required: true },
+    nameAR: { type: String, required: true },
+    nameEN: { type: String, required: true },
     role: {
       type: String,
     },
@@ -11,7 +12,8 @@ const TeamMemberSchema = new Schema(
     number: { type: Number },
     team: { type: Schema.Types.ObjectId, ref: "Team" },
     ageGroup: { type: String },
-    bio: { type: String },
+    bioAR: { type: String },
+    bioEN: { type: String },
     photo: String,
     stats: {
       appearances: Number,

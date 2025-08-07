@@ -9,8 +9,7 @@ const ContactusSchema = new Schema(
       required: [true, " email is required"],
       unique: true,
     },
-    Subject: String,
-    status: String,
+    socialMedia: [String],
   },
   { timestamps: true }
 );

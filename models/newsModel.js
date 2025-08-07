@@ -3,11 +3,13 @@ const { Schema } = mongoose;
 
 const newsSchema = new Schema(
   {
-    title: String,
-    content: String,
+    titleEN: String,
+    titleAR: String,
+    contentAR: String,
+    contentEN: String,
     video: String,
-    photo : String ,
-    images: [String], 
+    photo: String,
+    images: [String],
   },
   { timestamps: true }
 );

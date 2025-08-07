@@ -3,14 +3,16 @@ const { Schema } = mongoose;
 
 const EventSchema = new Schema(
   {
-    title: String,
-    description: String,
+    titleAR: String,
+    titleEN: String,
+    descriptionAR: String,
+    descriptionEN: String,
     date: String,
-    location: String,
+    locationAR: String,
+    locationEN: String,
     photo: String,
     images: [String],
     video: String,
-    createdBy: { type: Schema.Types.ObjectId, ref: "User" },
   },
   { timestamps: true }
 );
