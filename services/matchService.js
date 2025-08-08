@@ -45,7 +45,12 @@ exports.getAllMatches = async ({
   const skip = (parsedPage - 1) * parsedLimit;
 
   const [match, total] = await Promise.all([
-    MatchModel.find(query).sort(sort).skip(skip).limit(parsedLimit),
+    MatchModel.find(query)
+      .sort(sort)
+      .skip(skip)
+      .limit(parsedLimit)
+      .populate("homeTeam", "nameEN")
+      .populate("awayTeam", "nameEN"),
     MatchModel.countDocuments(query),
   ]);
 
@@ -66,8 +71,8 @@ exports.createMatch = async (data) => {
 
 exports.getMatchById = async (id) => {
   return await MatchModel.findById(id)
-    .populate("homeTeam", "name")
-    .populate("awayTeam", "name");
+    .populate("homeTeam", "nameEN")
+    .populate("awayTeam", "nameEN");
 };
 
 exports.updateMatch = async (id, data) => {
