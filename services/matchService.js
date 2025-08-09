@@ -47,7 +47,7 @@ exports.getAllMatches = async ({
 
   if (keyword && keyword.trim() !== "") {
     query.$or = [
-      { location: { $regex: keyword, $options: "i" } },
+      { locationEN: { $regex: keyword, $options: "i" } },
       { date: { $regex: keyword, $options: "i" } },
     ];
   }
