@@ -45,8 +45,10 @@ exports.getEvent = async ({
   const query = {};
 
   if (keyword && keyword.trim() !== "") {
-    query.$or = [{ titleEN: { $regex: keyword, $options: "i" } }];
-    query.$or = [{ locationEN: { $regex: keyword, $options: "i" } }];
+    query.$or = [
+      { titleEN: { $regex: keyword, $options: "i" } },
+      { locationEN: { $regex: keyword, $options: "i" } },
+    ];
   }
 
   const parsedPage = parseInt(page);

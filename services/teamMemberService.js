@@ -28,8 +28,9 @@ exports.getAllMembers = async ({
   const query = {};
 
   if (keyword && keyword.trim() !== "") {
-    query.$or = [{ nameEN: { $regex: keyword, $options: "i" } }];
-    query.$or = [{ team: { $regex: keyword, $options: "i" } }];
+    query.$or = [
+      { nameEN: { $regex: keyword, $options: "i" } },
+    ];
   }
 
   const parsedPage = parseInt(page);

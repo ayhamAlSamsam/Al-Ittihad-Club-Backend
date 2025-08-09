@@ -9,7 +9,7 @@ exports.getAllMemberships = async ({
   const query = {};
 
   if (keyword && keyword.trim() !== "") {
-    query.$or = [{ price: { $regex: keyword, $options: "i" } }];
+    query.$or = [{ type: { $regex: keyword, $options: "i" } }];
   }
 
   const parsedPage = parseInt(page);
