@@ -5,20 +5,32 @@ const {
   deleteMatch,
   getAllMatches,
   getMatchById,
+  importMatchTable,
   updateMatch,
 } = require("../controllers/matchController");
 const {
-  resizeMatchImages,
-  uploadMatchImages,
+  resizeMatchImages ,
+  uploadMatchImages
 } = require("../services/matchService");
 
+const { uploadSingleExcelFile } = require("../middlewares/uploadingImage");
+
 const MatchRouter = express.Router();
+console.log(Auth.protect, uploadMatchImages, resizeMatchImages, createMatch);
 
 MatchRouter.route("/")
   .get(getAllMatches)
+  
   .post(Auth.protect, uploadMatchImages, resizeMatchImages, createMatch);
+
 MatchRouter.route("/:id")
   .get(getMatchById)
   .put(Auth.protect, uploadMatchImages, resizeMatchImages, updateMatch)
   .delete(Auth.protect, deleteMatch);
+
+MatchRouter.route("/matchTable").post(
+  uploadSingleExcelFile("file"),
+  importMatchTable
+);
+
 module.exports = MatchRouter;
