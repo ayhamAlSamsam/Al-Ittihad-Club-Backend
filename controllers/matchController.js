@@ -1,8 +1,10 @@
 const asyncHandler = require("express-async-handler");
 const ApiError = require("../utils/apiError");
 const matchService = require("../services/matchService");
-const { getNextAndPreviousMatchesFromExcelBuffer } = require("../services/matchService");
-
+const {
+  getNextAndPreviousMatchesFromExcelBuffer,
+  importMatchesFromExcel,
+} = require("../services/matchService");
 
 exports.getAllMatches = asyncHandler(async (req, res) => {
   try {
@@ -68,14 +70,33 @@ exports.deleteMatch = asyncHandler(async (req, res, next) => {
   res.status(204).send();
 });
 
-exports.importMatchTable = async (req, res, next) => {
+exports.importMatchDates = async (req, res, next) => {
   try {
     if (!req.file) {
       return res.status(400).json({ error: "Please upload an Excel file" });
     }
-    const result = await getNextAndPreviousMatchesFromExcelBuffer(req.file.buffer);
+    const result = await getNextAndPreviousMatchesFromExcelBuffer(
+      req.file.buffer
+    );
 
     res.status(200).json({ status: "success", data: result });
+  } catch (error) {
+    next(error);
+  }
+};
+exports.importMatchTable = async (req, res, next) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: "من فضلك ارفع ملف Excel" });
+    }
+
+    const insertedMatches = await importMatchesFromExcel(req.file.buffer);
+
+    res.status(200).json({
+      status: "success",
+      count: insertedMatches.length,
+      data: insertedMatches,
+    });
   } catch (error) {
     next(error);
   }

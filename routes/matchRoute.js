@@ -6,6 +6,7 @@ const {
   getAllMatches,
   getMatchById,
   importMatchTable,
+  importMatchDates,
   updateMatch,
 } = require("../controllers/matchController");
 const {
@@ -16,7 +17,6 @@ const {
 const { uploadSingleExcelFile } = require("../middlewares/uploadingImage");
 
 const MatchRouter = express.Router();
-console.log(Auth.protect, uploadMatchImages, resizeMatchImages, createMatch);
 
 MatchRouter.route("/")
   .get(getAllMatches)
@@ -28,6 +28,10 @@ MatchRouter.route("/:id")
   .put(Auth.protect, uploadMatchImages, resizeMatchImages, updateMatch)
   .delete(Auth.protect, deleteMatch);
 
+MatchRouter.route("/matchDates").post(
+  uploadSingleExcelFile("file"),
+  importMatchDates
+);
 MatchRouter.route("/matchTable").post(
   uploadSingleExcelFile("file"),
   importMatchTable

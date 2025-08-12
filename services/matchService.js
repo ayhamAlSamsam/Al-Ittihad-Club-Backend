@@ -183,8 +183,6 @@ async function getNextAndPreviousMatchesFromExcelBuffer(buffer) {
 
   const previousMatch = pastMatches.length > 0 ? pastMatches[0] : null;
   const nextMatch = futureMatches.length > 0 ? futureMatches[0] : null;
-
-  // Format the date field to ISO string (YYYY-MM-DD)
   const previousMatchFormatted = previousMatch
     ? { 
         ...previousMatch, 
@@ -202,6 +200,16 @@ async function getNextAndPreviousMatchesFromExcelBuffer(buffer) {
   return { previousMatch: previousMatchFormatted, nextMatch: nextMatchFormatted };
 }
 
+async function importMatchesFromExcel(buffer) {
+  const workbook = xlsx.read(buffer, { type: "buffer" });
+  const sheet = workbook.Sheets[workbook.SheetNames[0]];
+  const matches = xlsx.utils.sheet_to_json(sheet);
+
+  const insertedMatches = await MatchModel.insertMany(matches);
+
+  return insertedMatches;
+}
+
 module.exports = {
   uploadMatchImages,
   resizeMatchImages,
@@ -211,4 +219,5 @@ module.exports = {
   updateMatch,
   deleteMatch,
   getNextAndPreviousMatchesFromExcelBuffer,
+  importMatchesFromExcel
 };
